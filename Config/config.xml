@@ -28,6 +28,12 @@
         </hook>
     </hooks>
 
+    <services>
+        <service id="data_table_add_column_listener" class="ProductStatus\EventListener\DataTableAddColumnListener">
+            <tag name="kernel.event_subscriber"/>
+        </service>
+    </services>
+
 
     <!--
     <exports>
