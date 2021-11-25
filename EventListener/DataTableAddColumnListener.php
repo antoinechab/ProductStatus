@@ -4,6 +4,8 @@ namespace ProductStatus\EventListener;
 
 use EasyProductManager\Events\DataTableAddColumn;
 use EasyProductManager\Events\DataTableColumnData;
+use ProductStatus\Model\Map\ProductProductStatusTableMap;
+use ProductStatus\Model\ProductProductStatus;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
@@ -23,7 +25,8 @@ class DataTableAddColumnListener implements EventSubscriberInterface
     }
 
     public function onColumnAdded(DataTableAddColumn $event){
-//        $event->addColumn(['title'=>'Statut','orderable'=>true]);
+        $event->addColumn(['title'=>'Statut','orderable'=>true]);
+//        $event->addColumn(['title'=>'test','orderable'=>false]);
     }
 
     public function onColumnDataAdded(DataTableColumnData $event){
@@ -31,27 +34,29 @@ class DataTableAddColumnListener implements EventSubscriberInterface
         $query = $event->getQuery();
         $request = $event->getRequest();
 
-        foreach ($event->getNewColumns() as $newColumn){
-            $query->withColumn($newColumn[0],$newColumn[1]);
-
-        }
-
-        // colonne statut
         $products = $query->limit($this->getLength($request))->find();
+//        $query->withColumn($event->getNewColumns()['status']['column'],$event->getNewColumns()['status']['label']);
+//        $query->useProductCategoryQuery()
+//            ->withColumn('product_category.POSITION', $event->getNewColumns()['status']['label'])
+//            ->endUse();
 
         /** @var Product $product */
         foreach ($products as $product) {
 //            // Jointure product statut
+//            $statut = $product->getVirtualColumn('productStatus');
+//
 //            $query->useProductProductStatusQuery()
 //                ->filterByProductId($product->getId())
 //                ->useProductStatusQuery('productStatus')
 //                ->endUse()
 //                ->endUse()
 //            ;
-//            $statut = $product->getVirtualColumn('statut');
         }
 
         $event->setQuery($query);
+//        $event->addDataTableJson($product->hasVirtualColumn('productStatus') ? $product->getVirtualColumn('productStatus') : 'aucun');
+        $event->addDataTableJson($product->getVersion());
+//        $event->addDataTableJson($product->getVirtual());
     }
 
     /**
