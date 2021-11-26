@@ -26,7 +26,8 @@ class DataTableAddColumnListener implements EventSubscriberInterface
 
     public function onColumnAdded(DataTableAddColumn $event){
         $event->addColumn(['title'=>'Statut','orderable'=>true]);
-//        $event->addColumn(['title'=>'test','orderable'=>false]);
+//        $event->addColumn(['title'=>'Virtual','orderable'=>false]);
+        //todo voir pourquoi une seule colonne est ajoutable
     }
 
     public function onColumnDataAdded(DataTableColumnData $event){
@@ -34,6 +35,7 @@ class DataTableAddColumnListener implements EventSubscriberInterface
         $query = $event->getQuery();
         $request = $event->getRequest();
 
+        //todo créer la requête pour les status produit
         $products = $query->limit($this->getLength($request))->find();
 //        $query->withColumn($event->getNewColumns()['status']['column'],$event->getNewColumns()['status']['label']);
 //        $query->useProductCategoryQuery()
@@ -51,12 +53,13 @@ class DataTableAddColumnListener implements EventSubscriberInterface
 //                ->endUse()
 //                ->endUse()
 //            ;
+            $event->addDataTableJson($product->getId(),$product->getVersion());
+//            $event->addDataTableJson($product->getId(),$product->getVirtual());
         }
 
         $event->setQuery($query);
 //        $event->addDataTableJson($product->hasVirtualColumn('productStatus') ? $product->getVirtualColumn('productStatus') : 'aucun');
-        $event->addDataTableJson($product->getVersion());
-//        $event->addDataTableJson($product->getVirtual());
+
     }
 
     /**
