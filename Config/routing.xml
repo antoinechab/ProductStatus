@@ -22,4 +22,10 @@
         <default key="_controller">ProductStatus\Controller\ConfigurationController::editProductStatus</default>
         <requirement key="product_id">[0-9A-Z]+</requirement>
     </route>
+
+    <route id="admin.update.status" path="/admin/module/ProductStatus/product/update/{product_id}/status">
+        <default key="_controller">ProductStatus\Controller\ProductStatusController::updateStatus</default>
+        <requirement key="product_id">[0-9A-Z]+</requirement>
+    </route>
+
 </routes>
